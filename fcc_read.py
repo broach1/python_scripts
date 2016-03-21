@@ -16,6 +16,13 @@ h_rho_e = rt.TH1F("h_rho_e","h_rho_e",160,2700,3500)
 h_layer = rt.TH1F("h_layer","h_layer",160,2700,3500)
 #ensures bins of 5mm in rho - the width of each layer
 
+
+mask = 0b1111111111111111111111111111111111111111111111111111111110000000
+mask = ~mask
+#assumes we shift the last 6 bits to the right, and then zeroes out everything
+#except the 7 bits of layer data, which are now at the end.
+
+
 for i in xrange(t1.GetEntries()):
     #iterate over events
     t1.GetEntry(i)
@@ -37,14 +44,18 @@ for i in xrange(t1.GetEntries()):
         #currently, only 13 active bins
         cellid = t1.hits[k].Core.Cellid
         energy = t1.hits[k].Core.Energy
-
-        #shift off the trailing bins
+        #print(bin(cellid))
         layer = cellid >> 6
-        rho = 2705 + 10*layer #mm
+        layer = layer & mask
+        
+        
+        #read from center of bin - first layer is 5mm of absorber
+        rho = 2700 -2.5 + 10*layer #mm
         h_layer.Fill(rho,energy)
 
 c1.cd()
 h_layer.Draw("E")
+print h_layer.GetMean()
 c1.SaveAs("h_layer.jpg")
 
 #h_rho.GetXaxis().SetTitle("#rho (mm)")
