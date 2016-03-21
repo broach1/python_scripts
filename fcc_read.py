@@ -6,11 +6,10 @@ import subprocess
 #source the environment from global
 #NOTE - this functionality currently doesn't work -
 #you need to source from the command line before running this script
-#os.system("source /afs/cern.ch/exp/fcc/sw/0.7/init_fcc_stack.sh")
 
 rt.gSystem.Load("libdatamodel")
 
-f1 = rt.TFile.Open("output.root") #path to wherever the file is
+f1 = rt.TFile.Open("../output.root") #path to wherever the file is
 t1 = f1.Get("events")
 
 c1 = rt.TCanvas("c1","c1",800,600)
