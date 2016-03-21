@@ -1,0 +1,8 @@
+#output files
+*.pdf
+*.ps
+*.jpg
+*.png
+
+#root files
+*.root
